@@ -117,6 +117,7 @@ def main():
 
     parser = argparse.ArgumentParser(description="Nethack Price ID")
     parser.add_argument("-c", "--cha", type=int, default=10, help="Charisma")
+    parser.add_argument("--svg", type=str, metavar="FILE", help="Export output as SVG")
     args = parser.parse_args()
 
     table = Table(caption=f"Prices for Charisma [bold][red]{args.cha}")
@@ -136,7 +137,7 @@ def main():
 
     total_height = sum(panel_height(t) for t in [SCROLLS, POTIONS, RINGS, WANDS])
 
-    console = Console(width=left_width + right_width, height=total_height)
+    console = Console(width=left_width + right_width, height=total_height, record=True)
 
     layout = Layout()
     layout.split_row(
@@ -179,3 +180,6 @@ def main():
     )
 
     console.print(layout)
+
+    if args.svg:
+        console.save_svg(args.svg, title="pid")
