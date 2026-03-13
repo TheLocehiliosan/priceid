@@ -1,0 +1,17 @@
+[project]
+name = "priceid"
+version = "0.1.0"
+description = "Nethack Price ID"
+requires-python = '>=3.13'
+dependencies = [
+  "rich>=14.2.0",
+]
+[dependency-groups]
+dev = [
+  "pyright>=1.1.407",
+  "ruff>=0.14.7",
+]
+[project.scripts]
+pid = "priceid.pid:main"
+[tool.uv]
+package = true
