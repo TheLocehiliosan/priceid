@@ -5,6 +5,7 @@ description = "Nethack Price ID"
 requires-python = '>=3.13'
 dependencies = [
   "rich>=14.2.0",
+  "textual>=3.0.0",
 ]
 [dependency-groups]
 dev = [
@@ -13,5 +14,6 @@ dev = [
 ]
 [project.scripts]
 pid = "priceid.pid:main"
+priceid = "priceid.cmdline:main"
 [tool.uv]
 package = true

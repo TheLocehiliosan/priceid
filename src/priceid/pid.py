@@ -32,10 +32,11 @@ POTIONS = """
 """
 
 RINGS = """
-= 100 others
-= 150 others
-= 200 \\[fire/f.action/lev/regen/search/s.digest/tport]
-= 300 \\[conflict/poly/poly.ctrl/tport.ctrl]
+= 100   others
+= 150   others
+= 150/2 \\[others/fire/f.action/lev/regen/search/s.digest/tport]
+= 200   \\[fire/f.action/lev/regen/search/s.digest/tport]
+= 300   \\[conflict/poly/poly.ctrl/tport.ctrl]
 """
 
 WANDS = """
