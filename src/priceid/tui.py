@@ -34,6 +34,13 @@ HINTS = (
     "  [bold]?[/]:Legend  [bold]R[/]:Reset  [bold]q[/]:Quit"
 )
 
+SMALL_HINTS = (
+    " [bold yellow]\\[S][/] Cha:[bold red]{cha}[/]"
+    "  [bold]p[/]:Price [bold]b[/]:Buy [bold]s[/]:Sell"
+    "  [bold]i[/]:Id [bold]c[/]:Cha [bold]d[/]:Disc"
+    "  [bold]?[/]:Legend [bold]R[/]:Reset [bold]q[/]:Quit"
+)
+
 MIN_WIDTH = 105
 MIN_HEIGHT = 35
 
@@ -48,6 +55,15 @@ PANELS = {
     "boots-panel": BOOTS,
 }
 
+PANEL_TITLES = {
+    "scrolls-panel": "Scrolls",
+    "potions-panel": "Potions",
+    "rings-panel": "Rings",
+    "wands-panel": "Wands",
+    "tools-panel": "Tools",
+    "boots-panel": "Boots",
+}
+
 def _query_terminal_size() -> tuple[int, int]:
     """Query actual terminal dimensions via /dev/tty, bypassing fd redirections."""
     try:
@@ -60,96 +76,96 @@ def _query_terminal_size() -> tuple[int, int]:
 
 
 LEGEND: tuple[tuple[str, tuple[tuple[str, str], ...]], ...] = (
-    ("Scrolls", (
-        ("amnesia", "Amnesia"),
-        ("c.monster", "Create Monster"),
-        ("charge", "Charging"),
-        ("conf", "Confuse Monster"),
-        ("d.armor", "Destroy Armor"),
-        ("e.armor", "Enchant Armor"),
-        ("e.weapon", "Enchant Weapon"),
-        ("earth", "Earth"),
-        ("fdet", "Food Detection"),
-        ("fire", "Fire"),
-        ("gdet", "Gold Detection"),
-        ("geno", "Genocide"),
-        ("identify", "Identify"),
-        ("light", "Light"),
-        ("map", "Magic Mapping"),
-        ("punish", "Punishment"),
-        ("r.curse", "Remove Curse"),
-        ("scare", "Scare Monster"),
-        ("stink", "Stinking Cloud"),
-        ("tame", "Taming"),
-        ("tport", "Teleportation"),
+    ("Scrolls ?", (
+        ("?amnesia", "Amnesia"),
+        ("?c.monster", "Create Monster"),
+        ("?charge", "Charging"),
+        ("?conf", "Confuse Monster"),
+        ("?d.armor", "Destroy Armor"),
+        ("?e.armor", "Enchant Armor"),
+        ("?e.weapon", "Enchant Weapon"),
+        ("?earth", "Earth"),
+        ("?fdet", "Food Detection"),
+        ("?fire", "Fire"),
+        ("?gdet", "Gold Detection"),
+        ("?geno", "Genocide"),
+        ("?identify", "Identify"),
+        ("?light", "Light"),
+        ("?map", "Magic Mapping"),
+        ("?punish", "Punishment"),
+        ("?r.curse", "Remove Curse"),
+        ("?scare", "Scare Monster"),
+        ("?stink", "Stinking Cloud"),
+        ("?tame", "Taming"),
+        ("?tport", "Teleportation"),
     )),
-    ("Potions", (
-        ("acid", "Acid"),
-        ("blind", "Blindness"),
-        ("booze", "Booze"),
-        ("conf", "Confusion"),
-        ("enlight", "Enlightenment"),
-        ("fheal", "Full Healing"),
-        ("fruit", "Fruit Juice"),
-        ("g.able", "Gain Ability"),
-        ("g.energy", "Gain Energy"),
-        ("g.level", "Gain Level"),
-        ("hall", "Hallucination"),
-        ("heal", "Healing"),
-        ("holy", "Holy Water"),
-        ("inv", "Invisibility"),
-        ("lev", "Levitation"),
-        ("mdet", "Monster Detection"),
-        ("odet", "Object Detection"),
-        ("oil", "Oil"),
-        ("paralysis", "Paralysis"),
-        ("poly", "Polymorph"),
-        ("r.able", "Restore Ability"),
-        ("s.inv", "See Invisible"),
-        ("sick", "Sickness"),
-        ("sleep", "Sleeping"),
-        ("speed", "Speed"),
-        ("uncursed water", "Uncursed Water"),
-        ("unholy", "Unholy Water"),
-        ("xheal", "Extra Healing"),
+    ("Potions !", (
+        ("!acid", "Acid"),
+        ("!blind", "Blindness"),
+        ("!booze", "Booze"),
+        ("!conf", "Confusion"),
+        ("!enlight", "Enlightenment"),
+        ("!fheal", "Full Healing"),
+        ("!fruit", "Fruit Juice"),
+        ("!g.able", "Gain Ability"),
+        ("!g.energy", "Gain Energy"),
+        ("!g.level", "Gain Level"),
+        ("!hall", "Hallucination"),
+        ("!heal", "Healing"),
+        ("!holy", "Holy Water"),
+        ("!inv", "Invisibility"),
+        ("!lev", "Levitation"),
+        ("!mdet", "Monster Detection"),
+        ("!odet", "Object Detection"),
+        ("!oil", "Oil"),
+        ("!paralysis", "Paralysis"),
+        ("!poly", "Polymorph"),
+        ("!r.able", "Restore Ability"),
+        ("!s.inv", "See Invisible"),
+        ("!sick", "Sickness"),
+        ("!sleep", "Sleeping"),
+        ("!speed", "Speed"),
+        ("!uncursed water", "Uncursed Water"),
+        ("!unholy", "Unholy Water"),
+        ("!xheal", "Extra Healing"),
     )),
-    ("Rings", (
-        ("conflict", "Conflict"),
-        ("f.action", "Free Action"),
-        ("fire", "Fire Resistance"),
-        ("lev", "Levitation"),
-        ("poly", "Polymorph"),
-        ("poly.ctrl", "Polymorph Control"),
-        ("regen", "Regeneration"),
-        ("s.digest", "Slow Digestion"),
-        ("search", "Searching"),
-        ("tport", "Teleportation"),
-        ("tport.ctrl", "Teleport Control"),
+    ("Rings =", (
+        ("=conflict", "Conflict"),
+        ("=f.action", "Free Action"),
+        ("=fire", "Fire Resistance"),
+        ("=lev", "Levitation"),
+        ("=poly", "Polymorph"),
+        ("=poly.ctrl", "Polymorph Control"),
+        ("=regen", "Regeneration"),
+        ("=s.digest", "Slow Digestion"),
+        ("=search", "Searching"),
+        ("=tport", "Teleportation"),
+        ("=tport.ctrl", "Teleport Control"),
     )),
-    ("Wands", (
-        ("c.monster", "Create Monster"),
-        ("cancel", "Cancellation"),
-        ("death", "Death"),
-        ("poly", "Polymorph"),
-        ("tport", "Teleportation"),
-        ("wish", "Wishing"),
+    ("Wands /", (
+        ("/c.monster", "Create Monster"),
+        ("/cancel", "Cancellation"),
+        ("/death", "Death"),
+        ("/poly", "Polymorph"),
+        ("/tport", "Teleportation"),
+        ("/wish", "Wishing"),
     )),
-    ("Tools", (
-        ("holding", "Bag of Holding"),
-        ("magic lamp", "Magic Lamp"),
-        ("oil lamp", "Oil Lamp"),
-        ("oilskin", "Oilskin Sack"),
-        ("sack", "Sack"),
-        ("tricks", "Bag of Tricks"),
+    ("Tools (", (
+        ("(holding", "Bag of Holding"),
+        ("(magic lamp", "Magic Lamp"),
+        ("(oil lamp", "Oil Lamp"),
+        ("(oilskin", "Oilskin Sack"),
+        ("(sack", "Sack"),
+        ("(tricks", "Bag of Tricks"),
     )),
-    ("Boots", (
-        ("elven", "Elven Boots"),
-        ("fumble", "Boots of Fumbling"),
-        ("jump", "Jumping Boots"),
-        ("kick", "Kicking Boots"),
-        ("lev", "Levitation Boots"),
-        ("speed", "Speed Boots"),
-        ("water", "Water Walking Boots"),
+    ("Boots [", (
+        ("[elven", "Elven Boots"),
+        ("[fumble", "Boots of Fumbling"),
+        ("[jump", "Jumping Boots"),
+        ("[kick", "Kicking Boots"),
+        ("[lev", "Levitation Boots"),
+        ("[speed", "Speed Boots"),
+        ("[water", "Water Walking Boots"),
     )),
 )
 
@@ -179,10 +195,13 @@ def parse_line_bases(line: str) -> list[int]:
 
 
 def parse_line_parts(line: str) -> tuple[str, list[str]]:
-    """Split a panel line into (prefix, [items]).
+    """Split a panel line into (prefix, [glyph-prefixed items]).
 
-    '? 100   \\[conf/d.armor]'  ->  ('? 100   ', ['conf', 'd.armor'])
+    '? 100   \\[conf/d.armor]'  ->  ('? 100   ', ['?conf', '?d.armor'])
     '= 100 others'              ->  ('= 100 others', [])
+
+    The leading glyph character (?, !, =, /, (, [) is prepended to each
+    item so that shorthands are unique across categories.
     """
     idx = line.find("\\[")
     if idx == -1:
@@ -190,7 +209,8 @@ def parse_line_parts(line: str) -> tuple[str, list[str]]:
     close = line.find("]", idx + 2)
     if close == -1:
         return line.replace("\\[", "["), []
-    return line[:idx], line[idx + 2 : close].split("/")
+    glyph = line[0]
+    return line[:idx], [glyph + it for it in line[idx + 2 : close].split("/")]
 
 
 def _highlighted_line_indices(
@@ -237,6 +257,8 @@ def build_panel_text(
         else set()
     )
     identified = identified or set()
+    if identify_filter:
+        show_identified = True
     result = Text()
     first_visible = True
 
@@ -266,7 +288,11 @@ def build_panel_text(
                 if j > 0:
                     result.append("/", style=base_style)
                 if identify_filter and item.startswith(identify_filter):
-                    style = "bold reverse"
+                    style = (
+                        "bold reverse strike"
+                        if item in identified
+                        else "bold reverse"
+                    )
                 elif line_hl:
                     style = (
                         "bold reverse dim strike"
@@ -277,7 +303,7 @@ def build_panel_text(
                     style = "dim strike"
                 else:
                     style = base_style
-                result.append(item, style=style)
+                result.append(item[1:], style=style)
             result.append("]", style=base_style)
         else:
             if not first_visible:
@@ -389,6 +415,24 @@ class PriceApp(App):
         text-align: center;
     }
 
+    #small-content {
+        display: none;
+        height: 1fr;
+        padding: 0 1;
+    }
+
+    .small-mode #main {
+        display: none;
+    }
+
+    .small-mode #size-warning {
+        display: none;
+    }
+
+    .small-mode #small-content {
+        display: block;
+    }
+
     .too-small #main,
     .too-small #status-bar,
     .too-small #mode-input,
@@ -406,8 +450,10 @@ class PriceApp(App):
     def bell(self) -> None:
         pass
 
-    def __init__(self):
+    def __init__(self, *, force_small: bool = False):
         super().__init__()
+        self._force_small: bool = force_small
+        self._small_mode: bool = False
         self._active_mode: str | None = None
         self._identified: set[str] = set()
         self._show_identified: bool = True
@@ -437,6 +483,7 @@ class PriceApp(App):
                 wands = Static("", id="wands-panel", classes="item-panel")
                 wands.border_title = "Wands"
                 yield wands
+        yield VerticalScroll(Static(id="small-content-text"), id="small-content")
         legend = VerticalScroll(Static(id="legend-content"), id="legend")
         legend.border_title = "Legend"
         legend.border_subtitle = (
@@ -475,15 +522,27 @@ class PriceApp(App):
         if current == self._last_term_size:
             return
         self._last_term_size = current
-        if w < MIN_WIDTH or h < MIN_HEIGHT:
-            self.query_one("#size-warning", Static).update(
-                f"Terminal too small: {w}x{h}\n\nNeed at least {MIN_WIDTH}x{MIN_HEIGHT}\n\nResize to continue."
-            )
-            self.add_class("too-small")
-        else:
-            self.remove_class("too-small")
+        should_be_small = self._force_small or w < MIN_WIDTH or h < MIN_HEIGHT
+        if should_be_small and not self._small_mode:
+            self._enter_small_mode()
+        elif not should_be_small and self._small_mode and not self._force_small:
+            self._exit_small_mode()
+        self.remove_class("too-small")
         if self._active_mode == "legend":
             self._rebuild_legend()
+
+    def _enter_small_mode(self) -> None:
+        self._small_mode = True
+        self.add_class("small-mode")
+        self._build_small_full_content()
+        self._refresh_status_bar()
+        self.query_one("#small-content", VerticalScroll).focus()
+
+    def _exit_small_mode(self) -> None:
+        self._small_mode = False
+        self.remove_class("small-mode")
+        self.query_one("#small-content-text", Static).update("")
+        self._refresh_status_bar()
 
     def _load_state(self) -> dict | None:
         if not STATE_PATH.exists():
@@ -508,6 +567,8 @@ class PriceApp(App):
         self.charisma = 10
         self._build_table()
         self._update_panels()
+        if self._small_mode:
+            self._build_small_full_content()
         STATE_PATH.unlink(missing_ok=True)
         self._initial_prompt = True
         self._enter_mode(
@@ -554,8 +615,143 @@ class PriceApp(App):
                 )
             )
 
+    def _update_small_content(
+        self,
+        matching_bases: set[int] | None = None,
+        identify_filter: str = "",
+    ) -> None:
+        """Build and display search results in the small-mode content area."""
+        result = Text()
+        if matching_bases:
+            result.append(f"Prices for Charisma {self.charisma}\n", style="bold")
+            for base in BASES:
+                if base in matching_bases:
+                    buy = ", ".join(
+                        str(p) for p in sorted(buy_prices(self.charisma, base))
+                    )
+                    sell = ", ".join(
+                        str(p) for p in sorted(sell_prices(self.charisma, base))
+                    )
+                    result.append(f"  {base:>3}", style="cyan")
+                    result.append("  Buy: ", style="dim")
+                    result.append(buy, style="magenta")
+                    result.append("  Sell: ", style="dim")
+                    result.append(sell, style="green")
+                    result.append("\n")
+            for panel_id, raw_text in PANELS.items():
+                lines = raw_text.strip().splitlines()
+                hl = _highlighted_line_indices(lines, matching_bases)
+                if hl:
+                    result.append(f"\n{PANEL_TITLES[panel_id]}\n", style="bold cyan")
+                    first = True
+                    for i in sorted(hl):
+                        line = lines[i]
+                        prefix, items = parse_line_parts(line)
+                        if not first:
+                            result.append("\n")
+                        first = False
+                        if items:
+                            visible = [
+                                it
+                                for it in items
+                                if it not in self._identified
+                                or self._show_identified
+                            ]
+                            if not visible:
+                                continue
+                            result.append(prefix + "[")
+                            for j, item in enumerate(visible):
+                                if j > 0:
+                                    result.append("/")
+                                style = (
+                                    "dim strike"
+                                    if item in self._identified
+                                    else ""
+                                )
+                                result.append(item[1:], style=style)
+                            result.append("]")
+                        else:
+                            result.append(line.replace("\\[", "["))
+                    result.append("\n")
+        elif identify_filter:
+            for panel_id, raw_text in PANELS.items():
+                lines = raw_text.strip().splitlines()
+                matching = []
+                for i, line in enumerate(lines):
+                    _, items = parse_line_parts(line)
+                    if any(it.startswith(identify_filter) for it in items):
+                        matching.append(i)
+                if not matching:
+                    continue
+                result.append(f"\n{PANEL_TITLES[panel_id]}\n", style="bold cyan")
+                first = True
+                for i in matching:
+                    line = lines[i]
+                    prefix, items = parse_line_parts(line)
+                    if not first:
+                        result.append("\n")
+                    first = False
+                    if items:
+                        result.append(prefix + "[")
+                        for j, item in enumerate(items):
+                            if j > 0:
+                                result.append("/")
+                            if item.startswith(identify_filter):
+                                style = (
+                                    "bold reverse strike"
+                                    if item in self._identified
+                                    else "bold reverse"
+                                )
+                            elif item in self._identified:
+                                style = "dim strike"
+                            else:
+                                style = ""
+                            result.append(item[1:], style=style)
+                        result.append("]")
+                    else:
+                        result.append(line.replace("\\[", "["))
+                result.append("\n")
+        self.query_one("#small-content-text", Static).update(result)
+
+    def _build_small_full_content(self) -> None:
+        """Populate the small-mode content area with all prices and item panels."""
+        rows = []
+        for base in BASES:
+            buy = ", ".join(
+                str(p) for p in sorted(buy_prices(self.charisma, base))
+            )
+            sell = ", ".join(
+                str(p) for p in sorted(sell_prices(self.charisma, base))
+            )
+            rows.append((base, buy, sell))
+        buy_w = max(len(r[1]) for r in rows)
+        sell_w = max(len(r[2]) for r in rows)
+        result = Text()
+        result.append(f"Prices for Charisma {self.charisma}\n", style="bold")
+        for base, buy, sell in rows:
+            result.append(f"  {base:>3}", style="cyan")
+            result.append("  Buy: ", style="dim")
+            result.append(f"{buy:<{buy_w}}", style="magenta")
+            result.append("  Sell: ", style="dim")
+            result.append(f"{sell:>{sell_w}}", style="green")
+            result.append("\n")
+        for panel_id, raw_text in PANELS.items():
+            result.append(f"\n{PANEL_TITLES[panel_id]}\n", style="bold cyan")
+            result.append_text(
+                build_panel_text(
+                    raw_text,
+                    identified=self._identified,
+                    show_identified=self._show_identified,
+                )
+            )
+            result.append("\n")
+        self.query_one("#small-content-text", Static).update(result)
+
     def _refresh_status_bar(self) -> None:
-        text = HINTS
+        if self._small_mode:
+            text = SMALL_HINTS.format(cha=self.charisma)
+        else:
+            text = HINTS
         if not self._show_identified:
             text += f"  [dim]| {len(self._identified)} hidden[/]"
         self.query_one("#status-bar", Static).update(text)
@@ -563,6 +759,9 @@ class PriceApp(App):
     def watch_charisma(self, new_value: int) -> None:
         if self.is_mounted:
             self._build_table()
+            if self._small_mode:
+                self._build_small_full_content()
+                self._refresh_status_bar()
 
     def _enter_mode(
         self, mode: str, placeholder: str, restrict: str | None = None
@@ -586,6 +785,9 @@ class PriceApp(App):
         inp.display = False
         inp.value = ""
         self._update_panels()
+        if self._small_mode:
+            self._build_small_full_content()
+            self.query_one("#small-content", VerticalScroll).focus()
         self.query_one("#status-bar").display = True
         self._refresh_status_bar()
         if was_initial:
@@ -593,7 +795,10 @@ class PriceApp(App):
 
     def _show_legend(self) -> None:
         self._active_mode = "legend"
-        self.query_one("#main").display = False
+        if not self._small_mode:
+            self.query_one("#main").display = False
+        else:
+            self.query_one("#small-content").display = False
         self.query_one("#status-bar").display = False
         legend = self.query_one("#legend", VerticalScroll)
         legend.display = True
@@ -610,7 +815,11 @@ class PriceApp(App):
     def _hide_legend(self) -> None:
         self._active_mode = None
         self.query_one("#legend").display = False
-        self.query_one("#main").display = True
+        if not self._small_mode:
+            self.query_one("#main").display = True
+        else:
+            self.query_one("#small-content").display = True
+            self.query_one("#small-content", VerticalScroll).focus()
         self.query_one("#status-bar").display = True
         self._refresh_status_bar()
 
@@ -618,6 +827,8 @@ class PriceApp(App):
         if not value:
             self._build_table()
             self._update_panels()
+            if self._small_mode:
+                self._build_small_full_content()
             return
         try:
             price = int(value)
@@ -626,11 +837,15 @@ class PriceApp(App):
         matching_bases = {b for b in BASES if b == price}
         self._build_table(highlighted_bases=matching_bases)
         self._update_panels(highlighted_bases=matching_bases)
+        if self._small_mode:
+            self._update_small_content(matching_bases=matching_bases)
 
     def _do_price_search(self, value: str) -> None:
         if not value:
             self._build_table()
             self._update_panels()
+            if self._small_mode:
+                self._build_small_full_content()
             return
         try:
             price = int(value)
@@ -646,6 +861,8 @@ class PriceApp(App):
                 matching_bases.add(base)
         self._build_table(highlighted_bases=matching_bases)
         self._update_panels(highlighted_bases=matching_bases)
+        if self._small_mode:
+            self._update_small_content(matching_bases=matching_bases)
 
     def _toggle_identified(self, text: str) -> None:
         if text in ALL_ITEMS:
@@ -695,18 +912,42 @@ class PriceApp(App):
                 event.stop()
             return
 
+        if self._small_mode and not self._active_mode:
+            scroll = self.query_one("#small-content", VerticalScroll)
+            match event.key:
+                case "j" | "down":
+                    scroll.scroll_down(animate=False)
+                    event.stop()
+                    return
+                case "k" | "up":
+                    scroll.scroll_up(animate=False)
+                    event.stop()
+                    return
+                case "ctrl+d":
+                    scroll.scroll_relative(
+                        y=scroll.size.height // 2, animate=False
+                    )
+                    event.stop()
+                    return
+                case "ctrl+u":
+                    scroll.scroll_relative(
+                        y=-(scroll.size.height // 2), animate=False
+                    )
+                    event.stop()
+                    return
+
         match event.key:
             case "p":
-                self._enter_mode("base", "Base price...", restrict=r"[0-9]*")
+                self._enter_mode("base", "Base price...", restrict=r"[0-9d]*")
                 event.stop()
             case "b":
-                self._enter_mode("buy", "Buy price...", restrict=r"[0-9]*")
+                self._enter_mode("buy", "Buy price...", restrict=r"[0-9d]*")
                 event.stop()
             case "s":
-                self._enter_mode("sell", "Sell price...", restrict=r"[0-9]*")
+                self._enter_mode("sell", "Sell price...", restrict=r"[0-9d]*")
                 event.stop()
             case "i":
-                self._enter_mode("identify", "Item name...")
+                self._enter_mode("identify", "e.g. ?conf, !speed, [lev...")
                 event.stop()
             case "c":
                 self._enter_mode(
@@ -716,6 +957,8 @@ class PriceApp(App):
             case "d":
                 self._show_identified = not self._show_identified
                 self._update_panels()
+                if self._small_mode:
+                    self._build_small_full_content()
                 self._refresh_status_bar()
                 self._save_state()
                 event.stop()
@@ -733,12 +976,21 @@ class PriceApp(App):
                 event.stop()
 
     def on_input_changed(self, event: Input.Changed) -> None:
+        if self._active_mode in ("buy", "sell", "base") and "d" in event.value:
+            cleaned = event.value.replace("d", "")
+            self.query_one("#mode-input", Input).value = cleaned
+            self._show_identified = not self._show_identified
+            self._refresh_status_bar()
+            self._save_state()
+            return
         if self._active_mode in ("buy", "sell"):
             self._do_price_search(event.value)
         elif self._active_mode == "base":
             self._do_base_search(event.value)
         elif self._active_mode == "identify":
             self._update_panels(identify_filter=event.value)
+            if self._small_mode:
+                self._update_small_content(identify_filter=event.value)
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
         save = False
