@@ -25,8 +25,8 @@ from priceid.pid import (
 )
 
 HINTS = (
-    " [bold]b[/]:Buy  [bold]s[/]:Sell  [bold]i[/]:Identify"
-    "  [bold]c[/]:Charisma  [bold]d[/]:Discovered"
+    " [bold]p[/]:Price  [bold]b[/]:Buy  [bold]s[/]:Sell"
+    "  [bold]i[/]:Identify  [bold]c[/]:Charisma  [bold]d[/]:Discovered"
     "  [bold]R[/]:Reset  [bold]q[/]:Quit"
 )
 
@@ -410,7 +410,7 @@ class PriceApp(App):
 
     def _exit_mode(self) -> None:
         was_initial = self._initial_prompt and self._active_mode == "charisma"
-        if self._active_mode in ("buy", "sell"):
+        if self._active_mode in ("buy", "sell", "base"):
             self._build_table()
         self._active_mode = None
         self._initial_prompt = False
@@ -422,6 +422,19 @@ class PriceApp(App):
         self._refresh_status_bar()
         if was_initial:
             self._save_state()
+
+    def _do_base_search(self, value: str) -> None:
+        if not value:
+            self._build_table()
+            self._update_panels()
+            return
+        try:
+            price = int(value)
+        except ValueError:
+            return
+        matching_bases = {b for b in BASES if b == price}
+        self._build_table(highlighted_bases=matching_bases)
+        self._update_panels(highlighted_bases=matching_bases)
 
     def _do_price_search(self, value: str) -> None:
         if not value:
@@ -468,6 +481,9 @@ class PriceApp(App):
             return
 
         match event.key:
+            case "p":
+                self._enter_mode("base", "Base price...", restrict=r"[0-9]*")
+                event.stop()
             case "b":
                 self._enter_mode("buy", "Buy price...", restrict=r"[0-9]*")
                 event.stop()
@@ -501,6 +517,8 @@ class PriceApp(App):
     def on_input_changed(self, event: Input.Changed) -> None:
         if self._active_mode in ("buy", "sell"):
             self._do_price_search(event.value)
+        elif self._active_mode == "base":
+            self._do_base_search(event.value)
         elif self._active_mode == "identify":
             self._update_panels(identify_filter=event.value)
 
