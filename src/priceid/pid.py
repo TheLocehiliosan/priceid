@@ -26,8 +26,8 @@ POTIONS = """
 ! 250   \\[acid/oil]
 ! 300   \\[g.able/g.level/paralysis]
 
-! 0     \\[uncursed water]
-! 100   \\[holy/unholy]
+! 0     clear (uncursed water)
+! 100   clear (holy/unholy)
 """
 
 RINGS = """
