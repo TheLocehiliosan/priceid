@@ -13,7 +13,6 @@ dev = [
   "ruff>=0.14.7",
 ]
 [project.scripts]
-pid = "priceid.pid:main"
 priceid = "priceid.cmdline:main"
 [tool.uv]
 package = true

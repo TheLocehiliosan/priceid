@@ -3,7 +3,6 @@ from rich.console import Console
 from rich.layout import Layout
 from rich.table import Table
 from rich.panel import Panel
-import argparse
 
 BASES = [2, 8, 10, 20, 30, 50, 60, 80, 100, 150, 200, 250, 300, 400, 500, 600, 700]
 
@@ -112,15 +111,9 @@ def panel_height(text: str) -> int:
     return text.count("\n") + 3
 
 
-def main():
-    """Main entrypoint"""
-
-    parser = argparse.ArgumentParser(description="Nethack Price ID")
-    parser.add_argument("cha", type=int, nargs="?", metavar="C", default=10, help="Charisma (default: %(default)s)")
-    parser.add_argument("--svg", type=str, metavar="FILE", help="Export output as SVG")
-    args = parser.parse_args()
-
-    table = Table(caption=f"Prices for Charisma [bold][red]{args.cha}")
+def print_prices(cha: int = 10, *, svg: str | None = None) -> None:
+    """Print a static price table and item reference panels."""
+    table = Table(caption=f"Prices for Charisma [bold][red]{cha}")
 
     table.add_column("Base", justify="right", style="cyan", no_wrap=True)
     table.add_column("Buy", style="magenta")
@@ -129,8 +122,8 @@ def main():
     for base in BASES:
         table.add_row(
             str(base),
-            ", ".join(str(p) for p in sorted(buy_prices(args.cha, base))),
-            ", ".join(str(p) for p in sorted(sell_prices(args.cha, base))),
+            ", ".join(str(p) for p in sorted(buy_prices(cha, base))),
+            ", ".join(str(p) for p in sorted(sell_prices(cha, base))),
         )
     left_width = max_content_width(TOOLS, BOOTS) + PANEL_OVERHEAD
     right_width = max_content_width(SCROLLS, POTIONS, RINGS, WANDS) + PANEL_OVERHEAD
@@ -181,5 +174,5 @@ def main():
 
     console.print(layout)
 
-    if args.svg:
-        console.save_svg(args.svg, title="pid")
+    if svg:
+        console.save_svg(svg, title="priceid - Nethack Price ID")

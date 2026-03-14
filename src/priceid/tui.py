@@ -343,7 +343,7 @@ def build_legend(width: int) -> RichTable:
             text.append(category, style="bold cyan")
             text.append("\n")
             for short, full in items:
-                text.append(f"   {short:<16}", style="bold")
+                text.append(f"   {short[1:]:<16}", style="bold")
                 text.append(f"{full}\n")
         col_texts.append(text)
 
