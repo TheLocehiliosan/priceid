@@ -35,7 +35,7 @@ HINTS = (
 )
 
 SMALL_HINTS = (
-    " [bold yellow]\\[S][/] Cha:[bold red]{cha}[/]"
+    "[bold yellow]\\[S][/] Cha:[bold red]{cha}[/]"
     "  [bold]p[/]:Price [bold]b[/]:Buy [bold]s[/]:Sell"
     "  [bold]i[/]:Id [bold]c[/]:Cha [bold]d[/]:Disc"
     "  [bold]?[/]:Legend [bold]R[/]:Reset [bold]q[/]:Quit"
@@ -431,6 +431,10 @@ class PriceApp(App):
 
     .small-mode #small-content {
         display: block;
+    }
+
+    .small-mode #status-bar {
+        height: auto;
     }
 
     .too-small #main,
