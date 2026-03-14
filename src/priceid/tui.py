@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import fcntl
 import json
 import re
+import struct
+import termios
 from pathlib import Path
 
 from textual.app import App, ComposeResult
@@ -44,6 +47,17 @@ PANELS = {
     "tools-panel": TOOLS,
     "boots-panel": BOOTS,
 }
+
+def _query_terminal_size() -> tuple[int, int]:
+    """Query actual terminal dimensions via /dev/tty, bypassing fd redirections."""
+    try:
+        with open("/dev/tty", "r") as tty:
+            result = fcntl.ioctl(tty.fileno(), termios.TIOCGWINSZ, b"\x00" * 8)
+            rows, cols, _, _ = struct.unpack("HHHH", result)
+            return cols, rows
+    except OSError:
+        return 80, 24
+
 
 LEGEND: tuple[tuple[str, tuple[tuple[str, str], ...]], ...] = (
     ("Scrolls", (
@@ -398,6 +412,7 @@ class PriceApp(App):
         self._identified: set[str] = set()
         self._show_identified: bool = True
         self._initial_prompt: bool = False
+        self._last_term_size: tuple[int, int] = (0, 0)
 
     def compose(self) -> ComposeResult:
         with Horizontal(id="main"):
@@ -446,6 +461,7 @@ class PriceApp(App):
         self._update_panels()
         self._refresh_status_bar()
         self._check_size()
+        self.set_interval(0.25, self._check_size)
         if self._initial_prompt:
             self._enter_mode(
                 "charisma",
@@ -453,13 +469,12 @@ class PriceApp(App):
                 restrict=r"[0-9]*",
             )
 
-    def on_resize(self, event: events.Resize) -> None:
-        self._check_size()
-        if self._active_mode == "legend":
-            self._rebuild_legend()
-
     def _check_size(self) -> None:
-        w, h = self.size
+        w, h = _query_terminal_size()
+        current = (w, h)
+        if current == self._last_term_size:
+            return
+        self._last_term_size = current
         if w < MIN_WIDTH or h < MIN_HEIGHT:
             self.query_one("#size-warning", Static).update(
                 f"Terminal too small: {w}x{h}\n\nNeed at least {MIN_WIDTH}x{MIN_HEIGHT}\n\nResize to continue."
@@ -467,6 +482,8 @@ class PriceApp(App):
             self.add_class("too-small")
         else:
             self.remove_class("too-small")
+        if self._active_mode == "legend":
+            self._rebuild_legend()
 
     def _load_state(self) -> dict | None:
         if not STATE_PATH.exists():
@@ -580,12 +597,12 @@ class PriceApp(App):
         self.query_one("#status-bar").display = False
         legend = self.query_one("#legend", VerticalScroll)
         legend.display = True
-        self._rebuild_legend()
+        self.call_after_refresh(self._rebuild_legend)
         legend.scroll_home(animate=False)
         legend.focus()
 
     def _rebuild_legend(self) -> None:
-        content_width = self.size.width - 4
+        content_width = _query_terminal_size()[0] - 4
         self.query_one("#legend-content", Static).update(
             build_legend(content_width)
         )
