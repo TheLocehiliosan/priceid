@@ -35,6 +35,14 @@ Sleep 500ms
 Enter
 Sleep 1s
 
+# Search by base price
+Type "p"
+Sleep 500ms
+Type "100"
+Sleep 1.5s
+Escape
+Sleep 1s
+
 # Search by buy price
 Type "b"
 Sleep 500ms
@@ -74,6 +82,22 @@ Sleep 1.5s
 # Toggle discovered items back on
 Type "d"
 Sleep 1.5s
+
+# Show the legend
+Type@100ms "?"
+Sleep 2s
+Type "j"
+Sleep 300ms
+Type "j"
+Sleep 300ms
+Type "j"
+Sleep 300ms
+Type "j"
+Sleep 300ms
+Type "j"
+Sleep 1s
+Escape
+Sleep 1s
 
 # Quit
 Type "q"

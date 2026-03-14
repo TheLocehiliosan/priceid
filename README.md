@@ -56,11 +56,13 @@ Keybindings:
 
 | Key | Action |
 |-----|--------|
+| `p` | Search by base price |
 | `b` | Search by buy price |
 | `s` | Search by sell price |
 | `i` | Toggle an item as identified |
 | `c` | Set charisma |
 | `d` | Show/hide identified items |
+| `?` | Show item legend |
 | `R` | Reset all state |
 | `q` | Quit |
 
