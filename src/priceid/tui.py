@@ -247,6 +247,9 @@ class PriceApp(App):
 
     charisma: reactive[int] = reactive(10)
 
+    def bell(self) -> None:
+        pass
+
     def __init__(self):
         super().__init__()
         self._active_mode: str | None = None
