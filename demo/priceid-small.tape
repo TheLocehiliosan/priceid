@@ -1,10 +1,10 @@
-Output demo/priceid.gif
+Output demo/priceid-small.gif
 
 Require priceid
 
 Set Shell "bash"
-Set Width 1200
-Set Height 800
+Set Width 800
+Set Height 500
 Set FontSize 16
 Set Padding 10
 Set Framerate 15
@@ -25,7 +25,7 @@ Enter
 Sleep 500ms
 Show
 
-Type "priceid"
+Type "priceid --small"
 Enter
 Sleep 2s
 
@@ -35,18 +35,36 @@ Sleep 800ms
 Enter
 Sleep 1.5s
 
-# Search by base price
-Type "p"
-Sleep 800ms
-Type "100"
-Sleep 2.5s
-Escape
+# Scroll down through the full view
+Type "j"
+Sleep 400ms
+Type "j"
+Sleep 400ms
+Type "j"
+Sleep 400ms
+Type "j"
+Sleep 400ms
+Type "j"
+Sleep 400ms
+Type "j"
+Sleep 400ms
+Type "j"
+Sleep 400ms
+Type "j"
+Sleep 400ms
+Type "j"
+Sleep 400ms
+Type "j"
+Sleep 1.5s
+
+# Scroll back up
+Ctrl+U
 Sleep 1.5s
 
 # Search by buy price
 Type "b"
 Sleep 800ms
-Type "200"
+Type "67"
 Sleep 2.5s
 Escape
 Sleep 1.5s
@@ -62,7 +80,7 @@ Sleep 1.5s
 # Identify an item
 Type "i"
 Sleep 800ms
-Type "!inv"
+Type "!speed"
 Sleep 1.5s
 Enter
 Sleep 1.5s
@@ -70,7 +88,7 @@ Sleep 1.5s
 # Identify another item
 Type "i"
 Sleep 800ms
-Type "?conf"
+Type "?identify"
 Sleep 1.5s
 Enter
 Sleep 1.5s
@@ -101,8 +119,10 @@ Sleep 100ms
 Type "j"
 Sleep 100ms
 Type "j"
+Sleep 100ms
+Type "j"
 Sleep 1.5s
-Escape
+Type "q"
 Sleep 1.5s
 
 # Quit
