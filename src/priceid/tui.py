@@ -7,9 +7,10 @@ from pathlib import Path
 
 from textual.app import App, ComposeResult
 from textual import events
-from textual.containers import Horizontal, Vertical
+from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.widgets import Static, DataTable, Input
 from textual.reactive import reactive
+from rich.table import Table as RichTable
 from rich.text import Text
 
 from priceid.pid import (
@@ -27,7 +28,7 @@ from priceid.pid import (
 HINTS = (
     " [bold]p[/]:Price  [bold]b[/]:Buy  [bold]s[/]:Sell"
     "  [bold]i[/]:Identify  [bold]c[/]:Charisma  [bold]d[/]:Discovered"
-    "  [bold]R[/]:Reset  [bold]q[/]:Quit"
+    "  [bold]?[/]:Legend  [bold]R[/]:Reset  [bold]q[/]:Quit"
 )
 
 MIN_WIDTH = 105
@@ -43,6 +44,100 @@ PANELS = {
     "tools-panel": TOOLS,
     "boots-panel": BOOTS,
 }
+
+LEGEND: tuple[tuple[str, tuple[tuple[str, str], ...]], ...] = (
+    ("Scrolls", (
+        ("amnesia", "Amnesia"),
+        ("c.monster", "Create Monster"),
+        ("charge", "Charging"),
+        ("conf", "Confuse Monster"),
+        ("d.armor", "Destroy Armor"),
+        ("e.armor", "Enchant Armor"),
+        ("e.weapon", "Enchant Weapon"),
+        ("earth", "Earth"),
+        ("fdet", "Food Detection"),
+        ("fire", "Fire"),
+        ("gdet", "Gold Detection"),
+        ("geno", "Genocide"),
+        ("identify", "Identify"),
+        ("light", "Light"),
+        ("map", "Magic Mapping"),
+        ("punish", "Punishment"),
+        ("r.curse", "Remove Curse"),
+        ("scare", "Scare Monster"),
+        ("stink", "Stinking Cloud"),
+        ("tame", "Taming"),
+        ("tport", "Teleportation"),
+    )),
+    ("Potions", (
+        ("acid", "Acid"),
+        ("blind", "Blindness"),
+        ("booze", "Booze"),
+        ("conf", "Confusion"),
+        ("enlight", "Enlightenment"),
+        ("fheal", "Full Healing"),
+        ("fruit", "Fruit Juice"),
+        ("g.able", "Gain Ability"),
+        ("g.energy", "Gain Energy"),
+        ("g.level", "Gain Level"),
+        ("hall", "Hallucination"),
+        ("heal", "Healing"),
+        ("holy", "Holy Water"),
+        ("inv", "Invisibility"),
+        ("lev", "Levitation"),
+        ("mdet", "Monster Detection"),
+        ("odet", "Object Detection"),
+        ("oil", "Oil"),
+        ("paralysis", "Paralysis"),
+        ("poly", "Polymorph"),
+        ("r.able", "Restore Ability"),
+        ("s.inv", "See Invisible"),
+        ("sick", "Sickness"),
+        ("sleep", "Sleeping"),
+        ("speed", "Speed"),
+        ("uncursed water", "Uncursed Water"),
+        ("unholy", "Unholy Water"),
+        ("xheal", "Extra Healing"),
+    )),
+    ("Rings", (
+        ("conflict", "Conflict"),
+        ("f.action", "Free Action"),
+        ("fire", "Fire Resistance"),
+        ("lev", "Levitation"),
+        ("poly", "Polymorph"),
+        ("poly.ctrl", "Polymorph Control"),
+        ("regen", "Regeneration"),
+        ("s.digest", "Slow Digestion"),
+        ("search", "Searching"),
+        ("tport", "Teleportation"),
+        ("tport.ctrl", "Teleport Control"),
+    )),
+    ("Wands", (
+        ("c.monster", "Create Monster"),
+        ("cancel", "Cancellation"),
+        ("death", "Death"),
+        ("poly", "Polymorph"),
+        ("tport", "Teleportation"),
+        ("wish", "Wishing"),
+    )),
+    ("Tools", (
+        ("holding", "Bag of Holding"),
+        ("magic lamp", "Magic Lamp"),
+        ("oil lamp", "Oil Lamp"),
+        ("oilskin", "Oilskin Sack"),
+        ("sack", "Sack"),
+        ("tricks", "Bag of Tricks"),
+    )),
+    ("Boots", (
+        ("elven", "Elven Boots"),
+        ("fumble", "Boots of Fumbling"),
+        ("jump", "Jumping Boots"),
+        ("kick", "Kicking Boots"),
+        ("lev", "Levitation Boots"),
+        ("speed", "Speed Boots"),
+        ("water", "Water Walking Boots"),
+    )),
+)
 
 _LINE_BASES_RE = re.compile(r"^[?!=/(\[]\s+(\d+(?:/\d+)*)")
 
@@ -180,6 +275,45 @@ def build_panel_text(
     return result
 
 
+LEGEND_COL_WIDTH = 40
+
+
+def build_legend(width: int) -> RichTable:
+    """Build a multi-column Rich Table renderable for the item legend."""
+    num_cols = max(1, width // LEGEND_COL_WIDTH)
+
+    col_width = min(LEGEND_COL_WIDTH, width // num_cols) if num_cols > 1 else width
+    separator = "─" * (col_width - 2)
+
+    col_cats: list[list[int]] = [[] for _ in range(num_cols)]
+    col_heights = [0] * num_cols
+    for i, (_, items) in enumerate(LEGEND):
+        shortest = min(range(num_cols), key=lambda c: col_heights[c])
+        col_cats[shortest].append(i)
+        col_heights[shortest] += 1 + len(items) + 2
+
+    col_texts: list[Text] = []
+    for cats in col_cats:
+        text = Text()
+        for j, cat_idx in enumerate(cats):
+            if j > 0:
+                text.append(f" {separator}\n", style="dim")
+            category, items = LEGEND[cat_idx]
+            text.append(" ")
+            text.append(category, style="bold cyan")
+            text.append("\n")
+            for short, full in items:
+                text.append(f"   {short:<16}", style="bold")
+                text.append(f"{full}\n")
+        col_texts.append(text)
+
+    table = RichTable(box=None, show_header=False, padding=(0, 2), expand=True)
+    for _ in range(num_cols):
+        table.add_column(vertical="top")
+    table.add_row(*col_texts)
+    return table
+
+
 class PriceApp(App):
     ENABLE_COMMAND_PALETTE = False
 
@@ -226,6 +360,13 @@ class PriceApp(App):
         display: none;
     }
 
+    #legend {
+        display: none;
+        height: 1fr;
+        border: solid $accent;
+        padding: 0 1;
+    }
+
     #size-warning {
         display: none;
         width: 1fr;
@@ -236,7 +377,8 @@ class PriceApp(App):
 
     .too-small #main,
     .too-small #status-bar,
-    .too-small #mode-input {
+    .too-small #mode-input,
+    .too-small #legend {
         display: none;
     }
 
@@ -280,6 +422,13 @@ class PriceApp(App):
                 wands = Static("", id="wands-panel", classes="item-panel")
                 wands.border_title = "Wands"
                 yield wands
+        legend = VerticalScroll(Static(id="legend-content"), id="legend")
+        legend.border_title = "Legend"
+        legend.border_subtitle = (
+            "Scroll: [bold]j[/]/[bold]k[/]  [bold]^D[/]/[bold]^U[/]"
+            "  Close: [bold]?[/]/[bold]ESC[/]"
+        )
+        yield legend
         yield Input(id="mode-input")
         yield Static(HINTS, id="status-bar")
         yield Static("", id="size-warning")
@@ -306,6 +455,8 @@ class PriceApp(App):
 
     def on_resize(self, event: events.Resize) -> None:
         self._check_size()
+        if self._active_mode == "legend":
+            self._rebuild_legend()
 
     def _check_size(self) -> None:
         w, h = self.size
@@ -423,6 +574,29 @@ class PriceApp(App):
         if was_initial:
             self._save_state()
 
+    def _show_legend(self) -> None:
+        self._active_mode = "legend"
+        self.query_one("#main").display = False
+        self.query_one("#status-bar").display = False
+        legend = self.query_one("#legend", VerticalScroll)
+        legend.display = True
+        self._rebuild_legend()
+        legend.scroll_home(animate=False)
+        legend.focus()
+
+    def _rebuild_legend(self) -> None:
+        content_width = self.size.width - 4
+        self.query_one("#legend-content", Static).update(
+            build_legend(content_width)
+        )
+
+    def _hide_legend(self) -> None:
+        self._active_mode = None
+        self.query_one("#legend").display = False
+        self.query_one("#main").display = True
+        self.query_one("#status-bar").display = True
+        self._refresh_status_bar()
+
     def _do_base_search(self, value: str) -> None:
         if not value:
             self._build_table()
@@ -465,6 +639,30 @@ class PriceApp(App):
             self._identified.symmetric_difference_update(matches)
 
     def on_key(self, event: events.Key) -> None:
+        if self._active_mode == "legend":
+            legend = self.query_one("#legend", VerticalScroll)
+            match event.key:
+                case "escape" | "question_mark":
+                    self._hide_legend()
+                    event.stop()
+                case "j":
+                    legend.scroll_down(animate=False)
+                    event.stop()
+                case "k":
+                    legend.scroll_up(animate=False)
+                    event.stop()
+                case "ctrl+d":
+                    legend.scroll_relative(
+                        y=legend.size.height // 2, animate=False
+                    )
+                    event.stop()
+                case "ctrl+u":
+                    legend.scroll_relative(
+                        y=-(legend.size.height // 2), animate=False
+                    )
+                    event.stop()
+            return
+
         if self._active_mode == "reset_confirm":
             if event.key == "y":
                 self._reset_state()
@@ -503,6 +701,9 @@ class PriceApp(App):
                 self._update_panels()
                 self._refresh_status_bar()
                 self._save_state()
+                event.stop()
+            case "question_mark":
+                self._show_legend()
                 event.stop()
             case "R":
                 self._active_mode = "reset_confirm"
