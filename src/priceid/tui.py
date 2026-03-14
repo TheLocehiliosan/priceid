@@ -385,7 +385,7 @@ class PriceApp(App):
 
     def _refresh_status_bar(self) -> None:
         text = HINTS
-        if not self._show_identified and self._identified:
+        if not self._show_identified:
             text += f"  [dim]| {len(self._identified)} hidden[/]"
         self.query_one("#status-bar", Static).update(text)
 
