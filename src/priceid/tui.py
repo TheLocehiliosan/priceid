@@ -199,7 +199,7 @@ class PriceApp(App):
     }
 
     #price-table {
-        height: 1fr;
+        height: auto;
         border: solid $accent;
         background: transparent;
     }
