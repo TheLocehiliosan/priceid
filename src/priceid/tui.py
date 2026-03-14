@@ -488,7 +488,7 @@ class PriceApp(App):
         legend.border_title = "Legend"
         legend.border_subtitle = (
             "Scroll: [bold]j[/]/[bold]k[/]  [bold]^D[/]/[bold]^U[/]"
-            "  Close: [bold]?[/]/[bold]ESC[/]"
+            "  Close: [bold]q[/]/[bold]?[/]/[bold]ESC[/]"
         )
         yield legend
         yield Input(id="mode-input")
@@ -876,7 +876,7 @@ class PriceApp(App):
         if self._active_mode == "legend":
             legend = self.query_one("#legend", VerticalScroll)
             match event.key:
-                case "escape" | "question_mark":
+                case "escape" | "question_mark" | "q":
                     self._hide_legend()
                     event.stop()
                 case "j":
