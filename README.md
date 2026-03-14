@@ -34,7 +34,7 @@ Prints a price table and item reference panels to the terminal.
 pid
 
 # Specify charisma
-pid -c 18
+pid 18
 
 # Export as SVG
 pid --svg pid.svg

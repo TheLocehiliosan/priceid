@@ -116,7 +116,7 @@ def main():
     """Main entrypoint"""
 
     parser = argparse.ArgumentParser(description="Nethack Price ID")
-    parser.add_argument("-c", "--cha", type=int, default=10, help="Charisma")
+    parser.add_argument("cha", type=int, nargs="?", metavar="C", default=10, help="Charisma (default: %(default)s)")
     parser.add_argument("--svg", type=str, metavar="FILE", help="Export output as SVG")
     args = parser.parse_args()
 
